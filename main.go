@@ -18,5 +18,7 @@ func main(){
 	n := 2
 	results := level1.ReverseLeftWords(str, n)
 
+
+
 	fmt.Printf("结果是：%v" , results)
 }
