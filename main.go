@@ -14,9 +14,14 @@ func main(){
 	var target =3
 	results:= level1.Shuffle(num, target)*/
 
-	str := "abcdefg"
+	/*str := "abcdefg"
 	n := 2
-	results := level1.ReverseLeftWords(str, n)
+	results := level1.ReverseLeftWords(str, n)*/
+
+	var num = []int{3,9,20,null,null,15,7}
+
+	result := level1.MaxDepth(num)
+
 
 
 
