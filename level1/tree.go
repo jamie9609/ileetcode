@@ -11,7 +11,7 @@ package level1
 //链接：https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/solution/mian-shi-ti-55-i-er-cha-shu-de-shen-du-xian-xu-bia/
 //来源：力扣（LeetCode）
 //著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
-type TreeNode struct {
+type TreeNode1 struct {
 	Val 	int
 	Left  	*TreeNode
 	Right	*TreeNode
@@ -41,18 +41,15 @@ func abs(a int) int {
 
 }
 
-func isBalanced(root *TreeNode) bool {
+func isBalanced1(root *TreeNode) bool {
 	if root == nil {
 		return true
 	}
-	if abs(maxDepth(root.Left) - maxDepth(root.Right)) > 1 {
-		return false
+	if abs(maxDepth(root.Left) - maxDepth(root.Right)) <= 1 && isBalanced(root.Right) && isBalanced(root.Left){
+		return true
 	}
-	return isBalanced(root.Right) && isBalanced(root.Left)
+	return false
 }
-
-
-
 
 
 func mirrorTree(root *TreeNode) *TreeNode {
@@ -74,4 +71,64 @@ func invertTree(root *TreeNode) *TreeNode {
 	invertTree(root.Left)
 	return root
 }
+
+
+type TreeNode struct {
+	Val 	int
+	Left  	*TreeNode
+	Right	*TreeNode
+}
+
+
+func maxDepthTree(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	return maxNum (maxDepthTree(root.Left) + 1, maxDepthTree(root.Right) + 1)
+}
+
+func maxNum(a int, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+
+func isBalanced(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	if abs(maxDepthTree(root.Right) - maxDepthTree(root.Left))  <= 1 && isBalanced(root.Left) && isBalanced(root.Right){
+		return true
+	}
+	return false
+
+}
+
+var skip int
+var res int
+
+func kthLargest(root *TreeNode, k int) int {
+	skip = k
+	res  = 0
+	dfs(root)
+	return res
+}
+
+func dfs(root *TreeNode)  {
+	if root != nil{
+		dfs(root.Right)
+		skip --
+		if skip == 0{
+			res = root.Val
+			return
+		}
+		dfs(root.Left)
+	}
+}
+
+
+
+
 

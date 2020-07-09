@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	level1 "ileetcode/level1"
+	"ileetcode/level1"
 )
 
 func main(){
@@ -18,12 +18,12 @@ func main(){
 	n := 2
 	results := level1.ReverseLeftWords(str, n)*/
 
-	var num = []int{3,9,20,null,null,15,7}
 
-	result := level1.MaxDepth(num)
+	var testArr = []int{2, 5, 3, 7, 4, 5, 8, 1, 19, 0, 11, -2, 20, 21, 4, -1, 0, 11, 7}
+	//level1.QuickSort(testArr)
+	//level1.QuickSortDesc(testArr)
 
+	result :=level1.FindKthLargest(testArr, 2)
 
-
-
-	fmt.Printf("结果是：%v" , results)
+	fmt.Printf("结果是：%v, %v" , result, testArr)
 }
