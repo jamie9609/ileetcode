@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"ileetcode/level1"
+	"ileetcode/level2"
 )
 
 func main(){
@@ -19,11 +19,12 @@ func main(){
 	results := level1.ReverseLeftWords(str, n)*/
 
 
-	var testArr = []int{2, 5, 3, 7, 4, 5, 8, 1, 19, 0, 11, -2, 20, 21, 4, -1, 0, 11, 7}
+	//var testArr = []int{0, 2, 5, 3, 7, 4, 5, 8, 1, 19, 1, 11, -2, 20, 21, 4, -1, 3, 11, 7}
 	//level1.QuickSort(testArr)
 	//level1.QuickSortDesc(testArr)
 
-	result :=level1.FindKthLargest(testArr, 2)
+	matrix := [][]int{{1},{5},{9}}
+	result := level2.SpiralOrder(matrix)
 
-	fmt.Printf("结果是：%v, %v" , result, testArr)
+	fmt.Printf("结果是：%v" , result)
 }

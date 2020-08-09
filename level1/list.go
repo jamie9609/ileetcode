@@ -96,3 +96,17 @@ func (this *MyQueue) Peek() int {
 func (this *MyQueue) Empty() bool {
 	return len(this.stack1) == 0
 }
+
+
+//Go解决二进制中1的个数(移位操作)
+
+func hammingWeight(num uint32) int {
+	sum := 0
+	//将二进制数字num无符号位右移一位(golang中>>)
+	for ; num > 0; num >>=1 {
+		if 1 & num == 1 {
+			sum ++
+		}
+	}
+	return sum
+}
