@@ -23,8 +23,10 @@ func main(){
 	//level1.QuickSort(testArr)
 	//level1.QuickSortDesc(testArr)
 
-	matrix := [][]int{{1},{5},{9}}
-	result := level2.SpiralOrder(matrix)
+	//matrix := [][]int{{1},{5},{9}}
 
-	fmt.Printf("结果是：%v" , result)
+	 nums := []int{1,3,3}
+	 res := level2.MinArray(nums)
+
+	 fmt.Printf("结果是：%+v" ,res)
 }

@@ -24,3 +24,26 @@ func firstUniqChar(s string) byte {
 	}
 	return ' '
 }
+
+
+//回文排列
+// 给定一个字符串，编写一个函数判定其是否为某个回文串的排列之一。 回文串是指正反两个方向都一样的单词或短语。排列是指字母的重新排列。
+
+func canPermutePalindrome(s string) bool {
+	res := make(map[int32]int)
+
+	for _, val := range s {
+		res[val] ++
+	}
+	sum := 0
+	for _, val := range res{
+		if val % 2 != 0{
+			sum ++
+		}
+	}
+	if sum == 0|| sum == 1{
+		return true
+	}
+	return false
+
+}

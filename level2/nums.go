@@ -213,3 +213,94 @@ func countDigitOne(n int) int {
 	}
 	return res
 }
+
+
+func NevWays(n int) int {
+	if n == 0 || n == 1 {
+		return 1
+	}
+	var res []int
+	res = append(res, 1)
+	res = append(res, 1)
+	for i := 0; i < n ; i ++{
+
+		res = append(res, (res[i]+res[i+1])%1000000007)
+	}
+	return res[n]
+}
+
+
+//动态规划，对于数组里求其中的最大子序和。如果前面的子序列>0为增益，需要加上。如果前面的子序列<0为损益，重新开始
+func maxSubArray(nums []int) int {
+	if len(nums) == 0 {
+		return -1
+	}
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	res, preSum, sum := nums[0], nums[0], nums[0]
+
+	for i:= 0; i< len(nums); i ++{
+		if preSum >=0 {
+			sum = preSum + nums[i]
+		} else {
+			sum = nums[i]
+		}
+		preSum = sum
+		if sum >= res {
+			res = sum
+		}
+	}
+	return res
+
+}
+
+func merge(A []int, m int, B []int, n int)  {
+	pointA := m -1
+	pointB := n -1
+	cur := m + n - 1
+	for pointA >= 0 && pointB >= 0 && cur > 0 {
+		if A[pointA] > B[pointB] {
+			A[cur] = A[pointA]
+			cur --
+			pointA --
+		} else if A[pointA] <= B[pointB]{
+			A[cur] = B[pointB]
+			cur --
+			pointB --
+		}
+	}
+	for pointA  >= 0 && pointB < 0 && cur >=0{
+		A[cur] = A[pointA]
+		pointA --
+		cur --
+	}
+	for pointB  >= 0 && pointA < 0 && cur >=0{
+		A[cur] = B[pointB]
+		pointB --
+		cur --
+	}
+}
+
+func MinArray(numbers []int) int {
+	n := len(numbers) - 1
+	if n == 0 {
+		return numbers[n]
+	}
+	if n == 1 {
+		if numbers[0] > numbers[1]{
+			return numbers[1]
+		}
+		return numbers[0]
+	}
+
+	for n >= 1 {
+		if numbers[n] >  numbers[n - 1] {
+			n --
+			continue
+		} else {
+			break
+		}
+	}
+	return numbers[n]
+}

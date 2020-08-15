@@ -125,3 +125,164 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	}
 	return solder1
 }
+
+
+func detectCycle(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return nil
+	}
+	slow := head
+	fast := head
+	for fast != nil && fast.Next != nil{
+		fast = fast.Next.Next
+		slow = slow.Next
+		if fast == slow {
+			break
+		}
+	}
+	if fast == nil || fast.Next == nil {
+		return nil
+	}
+	tmp := head
+	for tmp != slow {
+		tmp = tmp.Next
+		slow = slow.Next
+	}
+	return slow
+}
+
+
+//爬楼梯，斐波拉契数列
+
+func climbStairs(n int) int {
+	if n == 0 || n == 1 {
+		return 1
+	}
+	var res []int
+	res = append(res, 1)
+	res = append(res, 1)
+	for i := 0; i < n ; i ++{
+		res = append(res, res[i]+res[i+1])
+	}
+	return res[n]
+}
+
+
+type MyStack struct {
+	slice []int
+}
+
+/** Initialize your data structure here. */
+func Constructor() MyStack {
+	return MyStack{}
+
+}
+
+
+/** Push element x onto stack. */
+func (this *MyStack) Push(x int)  {
+	this.slice = append(this.slice, x)
+}
+
+
+/** Removes the element on top of the stack and returns that element. */
+func (this *MyStack) Pop() int {
+	if len(this.slice) == 0{
+		return -1
+	}
+	top := this.slice[len(this.slice) -1]
+	this.slice = this.slice[ : len(this.slice) -1 ]
+	return top
+
+}
+
+/** Get the top element. */
+func (this *MyStack) Top() int {
+	return this.slice[len(this.slice) - 1]
+}
+
+/** Returns whether the stack is empty. */
+func (this *MyStack) Empty() bool {
+	if len(this.slice) == 0{
+		return true
+	} else {
+		return false
+	}
+}
+
+func reverseList2(head *ListNode) *ListNode {
+	tmp, cur:= head, head
+	var pre *ListNode = nil
+	for cur != nil{
+		tmp = cur.Next
+		cur.Next = pre
+		pre = cur
+		cur = tmp
+	}
+	return pre
+}
+
+func reverseList(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	newHead := reverseList(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return newHead
+}
+
+
+func reverseList(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	newHead := reverseList(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return newHead
+}
+
+
+func addTwoNumbers2(l1 *ListNode, l2 *ListNode) *ListNode {
+	list := &ListNode{0, nil}
+	result := list
+	tmp := 0
+	for l1 != nil || l2 != nil || tmp != 0 {
+		if l1 != nil {
+			tmp += l1.Val
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			tmp += l2.Val
+			l2 = l2.Next
+		}
+		list.Next = &ListNode{tmp % 10, nil}
+		tmp = tmp / 10
+		list = list.Next
+	}
+	return result.Next
+}
+
+
+func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+	list := &ListNode{0, nil}
+	res := list
+	tmp := 0
+	for l1 != nil || l2 != nil || tmp != 0 {
+		if l1 != nil {
+			tmp += l1.Val
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			tmp += l2.Val
+			l2 = l2.Next
+		}
+		list.Next = &ListNode{tmp % 10, nil}
+		tmp = tmp / 10
+		list = list.Next
+	}
+	return res.Next
+}
+
+
