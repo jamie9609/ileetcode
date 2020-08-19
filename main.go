@@ -25,8 +25,16 @@ func main(){
 
 	//matrix := [][]int{{1},{5},{9}}
 
-	 nums := []int{1,3,3}
-	 res := level2.MinArray(nums)
+	Node5 := level2.ListNode{4,nil}
+	Node4 := level2. ListNode{3,&Node5}
+	Node3 := level2.ListNode{3,&Node4}
+	Node2 := level2.ListNode{2,&Node3}
+	Node1 := level2.ListNode{1,&Node2}
+	head := Node1
 
-	 fmt.Printf("结果是：%+v" ,res)
+
+	res := level2.DeleteDuplicates(&head)
+
+
+	fmt.Printf("结果是：%+v" ,res)
 }

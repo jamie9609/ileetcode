@@ -126,7 +126,7 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	return solder1
 }
 
-
+//删除环。
 func detectCycle(head *ListNode) *ListNode {
 	if head == nil || head.Next == nil {
 		return nil
@@ -222,7 +222,7 @@ func reverseList2(head *ListNode) *ListNode {
 	return pre
 }
 
-func reverseList(head *ListNode) *ListNode {
+func reverseList1(head *ListNode) *ListNode {
 	if head == nil || head.Next == nil {
 		return head
 	}
@@ -286,3 +286,399 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 }
 
 
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+	list := &ListNode{0, nil}
+	list.Next = head
+	pre, cur  := list, head
+	num := 1
+	for cur != nil {
+		if num == n {
+			cur = cur.Next
+			if cur == nil {
+				pre.Next = pre.Next.Next
+				break
+			}
+			pre = pre.Next
+			continue
+		}
+		cur = cur.Next
+		num ++
+	}
+	return list.Next
+}
+
+func swapPairs(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil{
+		return head
+	}
+	soldier := &ListNode{0, nil}
+	soldier.Next = head
+	res := head.Next
+
+	for head != nil && head.Next != nil {
+
+		cur := head
+		pre := head.Next
+
+		soldier.Next = pre
+		cur.Next = pre.Next
+		pre.Next = cur
+
+		soldier = cur
+		head = cur.Next
+	}
+
+	return res
+}
+
+func mergeTwoLists2(l1 *ListNode, l2 *ListNode) *ListNode {
+	soldier := &ListNode{0, nil}
+	pre := soldier
+	for l1 != nil && l2 != nil {
+		if l1.Val >= l2.Val{
+			pre.Next = l2
+			if l2 == nil {
+				continue
+			}else {l2 = l2.Next}
+		} else {
+			pre.Next = l1
+			if l1 == nil {
+				continue
+			} else {
+				l1 = l1.Next
+			}
+		}
+		pre = pre.Next
+	}
+	if l1== nil {
+		pre.Next = l2
+	}
+	if l2== nil {
+		pre.Next = l1
+	}
+	return soldier.Next
+}
+
+func mergeKLists(lists []*ListNode) *ListNode {
+	n := len(lists)
+	if n == 0{
+		return nil
+	}
+	if n == 1 {
+		return lists[0]
+	}
+	return mergeTwoLists2(mergeKLists(lists[:n/2]), mergeKLists(lists[n/2:]))
+
+}
+
+//k个一组反转链表
+
+func reverseKGroup1(head *ListNode, k int) *ListNode {
+	soldier := &ListNode{0 ,head}
+	pre := soldier
+
+	for head != nil{
+		tail := pre
+		for i := 0; i < k; i ++{
+			tail = tail.Next
+			//此处是如果为空，直接返回
+			if tail == nil {
+				return soldier.Next
+			}
+		}
+		tmp := tail.Next
+		head, tail = reverseList3(head, tail)
+		pre.Next = head
+		tail.Next = tmp
+		pre = tail
+		head = tail.Next
+	}
+	return  soldier.Next
+}
+
+func reverseList3(head *ListNode, tail *ListNode) (heads *ListNode, tails *ListNode) {
+
+	prev := tail.Next
+	p := head
+	for prev != tail {
+		nex := p.Next
+		p.Next = prev
+		prev = p
+		p = nex
+	}
+	return tail, head
+}
+
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	soldier := &ListNode{Next: head}
+	pre := soldier
+
+	for head != nil {
+		tail := pre
+		for i := 0; i < k; i++ {
+			tail = tail.Next
+			if tail == nil {
+				return soldier.Next
+			}
+		}
+		tmp := tail.Next
+		head, tail = myReverse(head, tail)
+		pre.Next = head
+		tail.Next = tmp
+		pre = tail
+		head = tail.Next
+	}
+	return soldier.Next
+}
+
+func myReverse(head, tail *ListNode) (*ListNode, *ListNode) {
+	prev := tail.Next
+	p := head
+	for prev != tail {
+		nex := p.Next
+		p.Next = prev
+		prev = p
+		p = nex
+	}
+	return tail, head
+}
+
+
+func rotateRight(head *ListNode, k int) *ListNode {
+	hair := &ListNode{0, head}
+	pre, soldier := head, head
+	num := 1
+	for pre != nil && pre.Next != nil{
+		pre = pre.Next
+		num ++
+	}
+	k = k % num
+	if head == nil || k == 0{
+		return head
+	}
+	for i := 1; i < num - k ; i ++ {
+		head = head.Next
+	}
+	hair.Next = head.Next
+	head.Next = nil
+	pre.Next = soldier
+	return hair.Next
+}
+
+func deleteDuplicates1(head *ListNode) *ListNode {
+	pre := head
+	if head == nil || head.Next == nil {
+		return head
+	} else {
+		for head != nil {
+			if head.Next != nil {
+				for head.Val == head.Next.Val {
+					head.Next = head.Next.Next
+					if head.Next == nil {
+						break
+					}
+				}
+			}
+			head = head.Next
+		}
+		return pre
+	}
+}
+
+
+
+func deleteDuplicates(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	hair := &ListNode{0, head}
+	pre := hair
+	cur := hair.Next
+
+	for cur != nil {
+		for cur.Next != nil && cur.Next.Val == cur.Val{
+			cur = cur.Next
+		}
+		if pre.Next != cur{
+			cur = cur.Next
+			pre.Next = cur
+			continue
+		} else {
+			pre = pre.Next
+			cur = cur.Next
+		}
+	}
+	return hair.Next
+}
+
+
+func partition(head *ListNode, x int) *ListNode {
+	listA := &ListNode{}
+	listB := &ListNode{}
+	small, big := listA, listB
+	for head != nil {
+		if head.Val >= x {
+			big.Next = head
+			big = big.Next
+		}
+		if head.Val < x {
+			small.Next = head
+			small = small.Next
+		}
+		head = head.Next
+	}
+	small.Next = listB.Next
+	big.Next = nil
+
+	return listA.Next
+}
+
+func reverseBetween(head *ListNode, m int, n int) *ListNode {
+	dummy := &ListNode{0, head}
+	prem := dummy
+
+	for i := 1; i <= m-1; i++ {
+		prem  = prem.Next
+	}
+	current := prem.Next
+	var pre1 *ListNode
+	for i := m ; i <=n ; i ++ {
+		temp := current.Next
+		current.Next = pre1
+		pre1 = current
+		current = temp
+	}
+	prem.Next.Next = current
+	prem.Next = pre1
+	return dummy.Next
+}
+
+
+type Node struct {
+	Val     int
+	Next    *Node
+	Random	*Node
+}
+
+
+func copyRandomList(head *Node) *Node {
+	res := make(map[*Node]*Node)
+	cur := head
+	for cur != nil {
+		tmp := &Node{cur.Val, nil ,nil}
+		res[cur] = tmp
+		cur = cur.Next
+	}
+
+	cur = head
+	for cur != nil {
+		res[cur].Next = res[cur.Next]
+		res[cur].Random = res[cur.Random]
+		cur = cur.Next
+	}
+	return res[head]
+}
+
+
+func reorderList(head *ListNode)  {
+	num := 0
+	i := 0
+
+	curA, curB, flag := head, head, head
+	for head != nil {
+		head = head.Next
+		num ++
+	}
+	num = num >> 1
+	//cur := &ListNode{0,nil}
+
+	for flag != nil {
+		flag = flag.Next
+		i ++
+		if i >= num {
+			curB = reverseList4(flag)
+			break
+		}
+	}
+	for curA != nil{
+		tmpA := curA.Next
+		tmpB := curB.Next
+		curA.Next = curB
+		curB.Next = tmpA
+		curA = tmpA
+		curB = tmpB
+
+	}
+}
+
+func reverseList4(head *ListNode) *ListNode {
+	tmp, cur:= head, head
+	var pre *ListNode = nil
+	for cur != nil{
+		tmp = cur.Next
+		cur.Next = pre
+		pre = cur
+		cur = tmp
+	}
+	return pre
+}
+
+
+
+func insertionSortList(head *ListNode) *ListNode {
+	dummy := &ListNode{-1, nil}
+	pre := dummy
+	cur := head
+	for cur != nil {
+		curNext := cur.Next
+		if pre.Next == nil {
+			pre.Next = cur
+			cur = curNext
+		}
+		for pre!= nil || pre.Next != nil{
+			if pre.Next.Val >= cur.Val {
+				cur.Next = pre.Next
+				pre.Next = cur
+				cur = curNext
+				pre = dummy
+				break
+			} else if pre.Next == nil {
+				pre.Next = cur
+				cur = curNext
+				pre = dummy
+				break
+			} else {
+				pre = pre.Next
+				cur = curNext
+				continue
+			}
+		}
+	}
+	return dummy.Next
+}
+
+
+func removeElements(head *ListNode, val int) *ListNode {
+	dummy := &ListNode{0, head}
+	pre := dummy
+	if pre.Next == nil {
+		return nil
+	}
+	preNext := dummy.Next
+	for preNext != nil {
+		if preNext.Val == val{
+			if preNext.Next == nil {
+				pre.Next = nil
+				break
+			} else {
+				preNext = preNext.Next
+				pre.Next = preNext
+				continue
+			}
+		}
+		pre = preNext
+		preNext = preNext.Next
+	}
+	return dummy.Next
+
+}

@@ -1,5 +1,7 @@
 package level2
 
+import "strings"
+
 func reverse(x int) int {
 
 	result := 0
@@ -304,3 +306,54 @@ func MinArray(numbers []int) int {
 	}
 	return numbers[n]
 }
+
+func isPalindromeString(s string) bool {
+	s = strings.ToLower(s)
+	n := len(s)
+	num := n-1
+
+	for i := 0; i < n; i++{
+		if (s[i] >= 'a' && s[i] <= 'z') || (s[i] >= '0' && s[i] <= '9'){
+			if (s[num] >= 'a' && s[num] <= 'z') || (s[num] >= '0' && s[num] <= '9'){
+				if s[i] != s[num]{
+					return false
+				}
+			}else{
+				num --
+			}
+			num--
+		}
+		if i >= num{
+			return true
+		}
+	}
+	return true
+}
+
+
+
+func isPalindrome(head *ListNode) bool {
+	var res []int
+	for head != nil {
+		res  = append(res, head.Val)
+		head = head.Next
+	}
+	return isPalindromeNum(res)
+}
+
+func isPalindromeNum(res []int) bool {
+	if len(res) == 1 {
+		return true
+	}
+	num := len(res) -1
+	for i := 0; i <= num; i ++ {
+		if res[i] != res[num] {
+			return false
+		} else {
+			num --
+		}
+	}
+	return true
+}
+
+
