@@ -1,8 +1,9 @@
 package main
 
 import (
+	"ileetcode/level3"
+
 	"fmt"
-	"ileetcode/level2"
 )
 
 func main(){
@@ -25,15 +26,30 @@ func main(){
 
 	//matrix := [][]int{{1},{5},{9}}
 
-	Node5 := level2.ListNode{4,nil}
-	Node4 := level2. ListNode{3,&Node5}
-	Node3 := level2.ListNode{3,&Node4}
-	Node2 := level2.ListNode{2,&Node3}
-	Node1 := level2.ListNode{1,&Node2}
+	/*a := map[string]string{"a": "1", "b": "2", "c": "3"}
+	var wg sync.WaitGroup
+	for _, v := range a{
+		wg.Add(1)
+		go func(v string) {
+			time.Sleep(5 * time.Second)
+			defer wg.Done()
+			fmt.Println(v)
+		}(v)
+
+		wg.Wait()
+		fmt.Println("done")
+	}*/
+
+
+	// Node5 := level3.ListNode{5,nil}
+	Node4 := level3. ListNode{4,nil}
+	Node3 := level3.ListNode{3,&Node4}
+	Node2 := level3.ListNode{2,&Node3}
+	Node1 := level3.ListNode{1,&Node2}
 	head := Node1
 
 
-	res := level2.DeleteDuplicates(&head)
+	res := level3.SplitListToParts(&head,3)
 
 
 	fmt.Printf("结果是：%+v" ,res)
