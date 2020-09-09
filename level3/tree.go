@@ -26,3 +26,21 @@ func isSubPathHelper(head *ListNode, root *TreeNode) bool {
 	return isSubPathHelper(head.Next, root.Right) || isSubPathHelper(head.Next, root.Left)
 }
 
+//二叉搜索树的后序遍历序列
+func verifyPostorder(postorder []int) bool {
+	if len(postorder) == 0 {
+		return true
+	}
+	f := len(postorder) -1
+	for i := 0; i < len(postorder) -1 ; i ++{
+		if postorder[i] >= postorder[len(postorder) - 1]{
+			f = i
+		}
+		if i > f && postorder[i] < postorder[len(postorder) - 1]{
+			return false
+		}
+	}
+	return verifyPostorder(postorder[:f]) && verifyPostorder(postorder[f:len(postorder)-1])
+}
+
+

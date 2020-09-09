@@ -1,7 +1,5 @@
 package level3
 
-import "github.com/pingcap/parser/ast"
-
 type ListNode struct {
 	Val int
 	Next *ListNode
@@ -638,6 +636,34 @@ func removeZeroSumSublists(head *ListNode) *ListNode {
 	}
 	return hair.Next
 
+}
+
+func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+	soldier := &ListNode{0, nil}
+	pre := soldier
+	for l1 != nil && l2 != nil {
+		if l1.Val >= l2.Val{
+			pre.Next = l2
+			if l2 == nil {
+				continue
+			}else {l2 = l2.Next}
+		} else {
+			pre.Next = l1
+			if l1 == nil {
+				continue
+			} else {
+				l1 = l1.Next
+			}
+		}
+		pre = pre.Next
+	}
+	if l1== nil {
+		pre.Next = l2
+	}
+	if l2== nil {
+		pre.Next = l1
+	}
+	return soldier.Next
 }
 
 
