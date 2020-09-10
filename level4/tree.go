@@ -1,5 +1,10 @@
 package level4
 
+import (
+	"git.xiaojukeji.com/volcano/hilda/common/member_privilege/pkg"
+	"golang.org/x/net/html/atom"
+)
+
 type TreeNode struct {
 	Val  	int
 	Left    *TreeNode
@@ -215,4 +220,160 @@ func levelOrder(root *Node) [][]int {
 		res = append(res, tmpRes)
 	}
 	return res
+}
+
+//N叉树的后序遍历
+func postorder(root *Node) []int {
+	var res []int
+	var stack []*Node
+	if root == nil {
+		return nil
+	}
+	stack = append(stack, root)
+	for len(stack) > 0 {
+		tmpNode := stack[len(stack) -1]
+		stack = stack[ :len(stack) -1 ]
+		//在切片开头添加元素
+		res = append([]int{tmpNode.Val}, res...)
+		for i := 0; i < len(tmpNode.Children); i++{
+			stack = append(stack, tmpNode.Children[i])
+		}
+	}
+	return res
+}
+
+//合并二叉树
+
+func mergeTrees(t1 *TreeNode, t2 *TreeNode) *TreeNode {
+	if t1 == nil {
+		return t2
+	}
+	if t2 == nil {
+		return t1
+	}
+
+	queue := []*TreeNode{t1, t2}
+	for len(queue) > 0{
+		n1 := queue[0]
+		n2 := queue[1]
+
+		n1.Val = n1.Val + n2.Val
+
+		if n1.Left != nil && n2.Left != nil {
+			queue = append(queue, n1.Left, n2.Left)
+		} else if n1.Left == nil && n2.Left != nil {
+			n1.Left = n2.Left
+		}
+		if n1.Right != nil && n2.Right != nil {
+			queue = append(queue, n1.Right, n2.Right)
+		}else if n1.Right == nil && n2.Right != nil{
+			n1.Right = n2.Right
+		}
+
+		queue = queue[2:]
+	}
+	return t1
+}
+
+//对称的二叉树
+
+func isSymmetric(root *TreeNode) bool {
+	queue := make([]*TreeNode, 0)
+	var node *TreeNode
+	node = root
+
+	if node == nil || node.Right== nil && node.Left == nil {
+		return true
+	}
+
+	if node.Left == nil && node.Right != nil || node.Left != nil && node.Right == nil {
+		return false
+	}
+
+	if node.Left.Val != node.Right.Val {
+		return false
+	}
+	l := node.Left
+	r := node.Right
+
+	queue = append(queue, l.Left, r.Right, l.Right, r.Left)
+	for len(queue) > 0{
+		q := queue[0]
+		p := queue[1]
+		queue = queue[2:]
+		if q == nil && p == nil {
+			continue
+		}
+		if q != nil && p == nil || q ==nil && p != nil {
+			return false
+		}else if q.Val != p.Val {
+			return false
+		}
+		queue = append(queue, q.Left, p.Right, q.Right, p.Left)
+	}
+	return true
+}
+
+//二叉树的最小深度
+
+func minDepth(root *TreeNode) int {
+	var node *TreeNode
+	node = root
+	queue := make([]*TreeNode, 0)
+	if root == nil {
+		return 0
+	}
+	queue = append(queue, node)
+	level:=1
+
+	for len(queue) > 0 {
+		tmpQueue := make([]*TreeNode, 0)
+		for i := 0; i < len(queue); i ++ {
+			tmpNode := queue[i]
+			if tmpNode.Right == nil && tmpNode.Left == nil {
+				return level
+			}
+			if tmpNode.Left != nil {
+				tmpQueue = append(tmpQueue, tmpNode.Left)
+			}
+			if tmpNode.Right != nil {
+				tmpQueue = append(tmpQueue, tmpNode.Right)
+			}
+		}
+		queue = tmpQueue
+		level ++
+	}
+	return level
+}
+
+
+//n叉树的最大深度
+
+func maxDepth(root *Node) int {
+	queue := make([]*Node, 0)
+	if root == nil {
+		return 0
+	}
+	level := 1
+	queue = append(queue, root)
+
+	for len(queue) > 0 {
+		tmpQueue := make([]*Node, 0)
+
+		for i := 0; i < len(queue); i ++ {
+			tmpNode := queue[i]
+
+			if len(tmpNode.Children) == 0{
+				continue
+			}
+
+			for j := 0; j <len(tmpNode.Children); j ++ {
+				tmpQueue = append(tmpQueue, tmpNode.Children[j])
+			}
+
+		}
+		level ++
+		queue = tmpQueue
+	}
+	return level - 1
 }
