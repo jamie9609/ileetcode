@@ -1,8 +1,7 @@
 package level4
 
 import (
-	"git.xiaojukeji.com/volcano/hilda/common/member_privilege/pkg"
-	"golang.org/x/net/html/atom"
+	"fmt"
 )
 
 type TreeNode struct {
@@ -45,8 +44,8 @@ func levelOrder1(root *TreeNode) [][]int {
 type Node struct {
 	Val 		int
 	Children 	[]*Node
-}
-var res []int*/
+}*/
+var res []int
 
 func preorder(root *Node) []int{
 	res = []int{}
@@ -377,3 +376,265 @@ func maxDepth(root *Node) int {
 	}
 	return level - 1
 }
+
+//最小高度树 ：给定一个有序整数数组，元素各不相同且按升序排列，编写一个算法，创建一棵高度最小的二叉搜索树。
+
+func sortedArrayToBST(nums []int) *TreeNode {
+	if nums == nil {
+		return nil
+	}
+	if len(nums) == 0 {
+		return nil
+	}
+
+	mid := len(nums) / 2
+
+	root := &TreeNode{nums[mid], nil,nil}
+	root.Left = sortedArrayToBST(nums[:mid])
+	root.Right = sortedArrayToBST(nums[mid+1:])
+	return root
+}
+
+//二叉搜索树的范围和
+func rangeSumBST(root *TreeNode, L int, R int) int {
+	if root == nil {
+		return 0
+	}
+
+	if root.Val > R{
+		return rangeSumBST(root.Left, L, R)
+	}
+	if root.Val < L {
+		return rangeSumBST(root.Right, L, R)
+	}
+	return root.Val + rangeSumBST(root.Right, L, R) + rangeSumBST(root.Left, L, R)
+}
+
+func rangeSumBST(root *TreeNode, L int, R int) int {
+	if root == nil {
+		return 0
+	}
+	res := 0
+	var node *TreeNode
+	node = root
+	var stack []*TreeNode
+	stack = append(stack, node)
+	for node != nil || len(stack) >0 {
+		tmpNode := stack[len(stack) -1]
+		stack = stack[ : len(stack) -1]
+		if tmpNode != nil {
+			if tmpNode.Val >= L && tmpNode.Val <= R{
+				res += tmpNode.Val
+			}
+			if tmpNode.Val > L {
+				stack = append(stack, tmpNode.Left)
+			}
+			if tmpNode.Val < R {
+				stack = append(stack, tmpNode.Right)
+			}
+		}
+	}
+	return res
+}
+
+
+func isSubtree(s *TreeNode, t *TreeNode) bool {
+	if s == nil && t == nil {
+		return true
+	}
+	if s == nil && t != nil || s != nil && t == nil{
+		return false
+	}
+	if helper(s, t) {
+		return true
+	} else {
+		return isSubtree(s.Left, t) || isSubtree(s.Right, t)
+	}
+
+}
+
+//判断俩树是否相等
+func helper(s *TreeNode, t *TreeNode) bool {
+	if s == nil && t == nil {
+		return true
+	}
+	if s == nil && t != nil || s != nil && t == nil{
+		return false
+	}
+	if s.Val == t.Val {
+		return helper(s.Right, t.Right) && helper(s.Left, t.Left)
+	}
+	return false
+}
+//二叉搜索树中的搜索
+func searchBST(root *TreeNode, val int) *TreeNode {
+	if root == nil{
+		return nil
+	}
+	for root != nil {
+		if root.Val == val {
+			break
+		}
+		if root.Val < val {
+			root = root.Right
+		} else if root.Val > val {
+			root = root.Left
+		}
+	}
+	return root
+}
+
+//将有序数组转换为二叉搜索树
+func sortedArrayToBST(nums []int) *TreeNode {
+	if len(nums) == 0 {
+		return nil
+	}
+
+	mid := len(nums) / 2
+
+	node := &TreeNode{nums[mid], nil ,nil }
+
+	node.Left = sortedArrayToBST(nums[:mid])
+	node.Right = sortedArrayToBST(nums[mid+1:])
+	return node
+}
+
+//路径总和：给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+//用层序遍历，新增一个数组用来记录和
+func hasPathSum(root *TreeNode, sum int) bool {
+	var sumQueue []int
+	if root == nil {
+		return false
+	}
+	queue := []*TreeNode{root}
+	sumQueue  = append(sumQueue, root.Val)
+	for len(queue) > 0 {
+
+		tmpNode := queue[0]
+		tmpSumNode := sumQueue[0]
+		queue = queue[1:]
+		sumQueue = sumQueue[1:]
+		if tmpNode.Left != nil {
+			queue = append(queue, tmpNode.Left)
+			sumQueue = append(sumQueue, tmpNode.Left.Val + tmpSumNode)
+		}
+		if tmpNode.Right != nil {
+			queue = append(queue, tmpNode.Right)
+			sumQueue = append(sumQueue, tmpNode.Right.Val + tmpSumNode)
+		}
+		if tmpNode.Right == nil && tmpNode.Left == nil {
+			if tmpSumNode == sum {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+//递增顺序查找树
+
+func increasingBST(root *TreeNode) *TreeNode {
+
+	if root == nil {
+		return nil
+	}
+	res := dsf(root)
+
+	newRoot := &TreeNode{res[0],nil,nil}
+
+	resRoot := newRoot
+	for _, val := range res[1:]{
+		next := &TreeNode{val,nil,nil}
+
+		newRoot.Right = next
+		newRoot = newRoot.Right
+	}
+	return resRoot
+}
+
+func dsf(root *TreeNode) []int {
+	if root == nil {
+		return nil
+	}
+	resLeft := dsf(root.Left)
+	resRight := dsf(root.Right)
+	return append(append(resLeft, root.Val), resRight...)
+}
+// ... 作为语法糖，会把元素分解后添加进去
+
+func isUnivalTree(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	num := root.Val
+	return helpers(root, num)
+}
+
+func helpers(root *TreeNode, num int) bool {
+	if root == nil  {
+		return true
+	}
+	if root.Val != num {
+		return false
+	}
+	return helpers(root.Right, num) && helpers(root.Left, num)
+}
+
+
+func levelOrderBottom(root *TreeNode) [][]int {
+	if root == nil {
+		return nil
+	}
+	var res [][]int
+	var queue []*TreeNode
+	queue = append(queue, root)
+	res = append(res, []int{root.Val})
+	for len(queue) > 0 {
+		tmpRes := make([]int, 0)
+		tmpQueue := make([]*TreeNode, 0)
+		for i := 0; i < len(queue); i ++ {
+			tmpNode := queue[i]
+
+			if tmpNode.Left != nil {
+				tmpRes = append(tmpRes, tmpNode.Left.Val)
+				tmpQueue = append(tmpQueue, tmpNode.Left)
+			}
+			if tmpNode.Right != nil {
+				tmpRes = append(tmpRes, tmpNode.Right.Val)
+				tmpQueue = append(tmpQueue, tmpNode.Right)
+			}
+		}
+		queue = tmpQueue
+		if len(tmpRes) == 0 {
+			continue
+		}
+		resQ := make([][]int,0)
+		resQ = append(resQ, tmpRes)
+		for _, key := range res {
+			resQ = append(resQ, key)
+		}
+		res = resQ
+	}
+	return res
+}
+func binaryTreePaths(root *TreeNode) []string {
+	if root == nil {
+		return nil
+	}
+	res := make([]string, 0)
+	helper3(root, "",&res)
+	return res
+}
+
+func helper3(root *TreeNode, str string, res *[]string)  {
+	if root == nil {
+		return
+	}
+	str = fmt.Sprintf("%s%d->", str, root.Val)
+	if root.Left == nil && root.Right == nil {
+		*res = append(*res, str[:len(str) -2])
+	}
+	helper3(root.Left, str, res)
+	helper3(root.Right, str, res)
+}
+
