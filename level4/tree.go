@@ -2,6 +2,9 @@ package level4
 
 import (
 	"fmt"
+	"github.com/pingcap/parser/ast"
+	"math"
+	"math/big"
 )
 
 type TreeNode struct {
@@ -638,3 +641,351 @@ func helper3(root *TreeNode, str string, res *[]string)  {
 	helper3(root.Right, str, res)
 }
 
+//修剪二叉搜索树
+func trimBST(root *TreeNode, low int, high int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	if root.Val < low {
+		return trimBST(root.Right, low, high)
+	}
+	if root.Val > high {
+		return trimBST(root.Left, low, high)
+	}
+	root.Left = trimBST(root.Left, low, high)
+	root.Right = trimBST(root.Right, low, high)
+	return root
+}
+
+func sumRootToLeaf(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	res := make([]int, 0)
+	num := 0
+	helper4(root, 0, &res)
+	for _, val := range res{
+		num += val
+	}
+	return num
+}
+
+func helper4(root *TreeNode, num int, res *[]int)  {
+	if root == nil {
+		return
+	}
+	num = num * 2 + root.Val
+	if root.Left == nil && root.Right == nil {
+		*res = append(*res, num)
+	}
+	helper4(root.Left, num, res)
+	helper4(root.Right, num, res)
+}
+
+//二叉树的层平均值
+
+func averageOfLevels(root *TreeNode) []float64 {
+	if root == nil {
+		return nil
+	}
+	queue := []*TreeNode{root}
+	res := make([]float64, 0)
+	resTmp := make([][]int, 0)
+	resTmp = append(resTmp, []int{root.Val})
+
+	for len(queue) >0 {
+		var tmpRes []int
+		var tmpQue []*TreeNode
+		for i := 0; i < len(queue); i ++ {
+			tmpNode := queue[i]
+			if tmpNode.Left != nil {
+				tmpRes = append(tmpRes, tmpNode.Left.Val)
+				tmpQue = append(tmpQue, tmpNode.Left)
+			}
+			if tmpNode.Right != nil{
+				tmpRes = append(tmpRes, tmpNode.Right.Val)
+				tmpQue =  append(tmpQue, tmpNode.Right)
+			}
+		}
+		queue = tmpQue
+		resTmp = append(resTmp, tmpRes)
+	}
+	if resTmp == nil {
+		return nil
+	}
+	for _, val := range resTmp {
+		sum := 0
+		num := 0
+		if val == nil {
+			continue
+		}
+		for _ , item := range val {
+			sum += item
+			num ++
+		}
+		res = append(res, float64(sum)/float64(num))
+	}
+	return res
+}
+
+
+func leafSimilar(root1 *TreeNode, root2 *TreeNode) bool {
+	var res1, res2 []int
+	if root1 == nil && root2 != nil || root1 !=  nil && root2 == nil {
+		return false
+	}
+
+	helper5(root1, &res1)
+	helper5(root2, &res2)
+
+
+	if len(res1) != len(res2) {
+		return false
+	}
+	for key, _ := range res1{
+		if res1[key] != res2[key]{
+			return false
+		}
+	}
+	return true
+}
+
+func helper5(root *TreeNode, path *[]int )  {
+	if root == nil {
+		return
+	}
+
+	if root.Right == nil && root.Left == nil {
+		*path = append(*path, root.Val)
+	}
+	helper5 (root.Left, path)
+	helper5 (root.Right, path)
+}
+
+
+func convertBST(root *TreeNode) *TreeNode {
+	help6(root, 0)
+	return root
+
+}
+
+//反向中序遍历迭代, 返回累加值
+func help6(root *TreeNode, preVal int ) int {
+	if root == nil {
+		return preVal
+	}
+	rightSum := help6(root.Right, preVal)
+	root.Val = rightSum + root.Val
+	leftSum := help6(root.Left, root.Val)
+	//左子树的累加值即整树的累加值
+	return leftSum
+}
+
+func diameterOfBinaryTree(root *TreeNode) int {
+	_, max := helper7(root)
+	return max
+}
+
+// 第一个返回值表示该树最大深度，第二个返回值表示该树最长路径。深度是节点的个数，直径是节点之间的横线
+func helper7(root *TreeNode) (maxDeep int , maxPath int){
+	if root == nil {
+		return 0,0
+	}
+	maxDeepL, maxPathL := helper7(root.Left)
+	maxDeepR, maxPathR := helper7(root.Right)
+
+	return max(maxDeepL, maxDeepR) + 1, max(maxDeepL + maxDeepR + 1, max(maxPathL, maxPathR))
+
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+//验证搜索二叉树
+
+func isValidBST1(root *TreeNode) bool {
+	return helper8(root, math.MinInt64, math.MaxInt64)
+}
+
+func helper8(root *TreeNode, lower int, upper int) bool {
+	if root == nil {
+		return true
+	}
+
+	if root.Val <= lower || root.Val >= upper {
+		return false
+	}
+
+	return helper8(root.Left, lower, root.Val) && helper8(root.Right, root.Val, upper)
+}
+
+//中序遍历
+func isValidBST(root *TreeNode) bool {
+	var stack []*TreeNode
+	var res []int
+	var node *TreeNode
+	node = root
+	if root == nil {
+		return true
+	}
+
+	for len(stack) >0  || node != nil {
+		for node != nil {
+			stack = append(stack, node)
+			node = node.Left
+		}
+		if node ==  nil {
+			tmpNode := stack[len(stack) - 1]
+			stack = stack[:len(stack) -1]
+			if len(res) > 0 && tmpNode.Val <= res[len(res)-1] {
+				return false
+			}
+			res = append(res, tmpNode.Val)
+			node = tmpNode.Right
+		}
+
+	}
+	return true
+}
+
+func numTrees(n int) int {
+	if n < 0 {
+		return 0
+	}
+	if n == 0 {
+		return 1
+	}
+	res := make([]int, n+1)
+	res[0] = 1
+	res[1] = 1
+	for i := 2 ; i <= n; i ++ {
+		for j := 1 ; j <= i ; j ++ {
+			res[i] += res[j - 1] * res[i -j]
+		}
+	}
+	return res[n]
+}
+
+func rightSideView(root *TreeNode) []int {
+	var queue []*TreeNode
+	var res [][]int
+	var resAns []int
+ 	if root == nil {
+		return nil
+	}
+
+	queue = append(queue, root)
+	res = append(res, []int{root.Val})
+
+	for len(queue) > 0 {
+		tmpQueue := make([]*TreeNode, 0)
+		tmpRes := make([]int, 0)
+		for i := 0 ; i < len(queue); i ++ {
+			tmpNode := queue[i]
+			if tmpNode.Left != nil {
+				tmpQueue = append(tmpQueue, tmpNode.Left)
+				tmpRes = append(tmpRes, tmpNode.Left.Val)
+
+			}
+			if tmpNode.Right != nil {
+				tmpQueue = append(tmpQueue, tmpNode.Right)
+				tmpRes = append(tmpRes, tmpNode.Right.Val)
+			}
+		}
+		queue = tmpQueue
+		res = append(res, tmpRes)
+	}
+
+	if res == nil {
+		return nil
+	}
+
+	for _, val := range res {
+		if len(val) == 0 {
+			continue
+		}
+		resAns = append(resAns, val[len(val) - 1])
+
+	}
+	return resAns
+}
+
+func zigzagLevelOrder(root *TreeNode) [][]int {
+	var queue []*TreeNode
+	var res [][]int
+	flag := 1
+	if root == nil {
+		return nil
+	}
+
+	queue = append(queue, root)
+	res = append(res, []int{root.Val})
+
+	for len(queue) > 0 {
+		tmpQueue := make([]*TreeNode, 0)
+		tmpRes := make([]int, 0)
+		flag ++
+		for i := 0 ; i < len(queue); i ++ {
+			tmpNode := queue[i]
+			if tmpNode.Left != nil {
+				tmpQueue = append(tmpQueue, tmpNode.Left)
+				if flag % 2 == 0 {
+					tmpRes = append([]int{tmpNode.Left.Val}, tmpRes ...)
+				}else {
+					tmpRes = append(tmpRes, tmpNode.Left.Val)
+				}
+			}
+			if tmpNode.Right != nil {
+				tmpQueue = append(tmpQueue, tmpNode.Right)
+				if flag % 2 == 0 {
+					tmpRes = append([]int{tmpNode.Right.Val}, tmpRes ...)
+				}else {
+					tmpRes = append(tmpRes, tmpNode.Right.Val)
+				}
+			}
+		}
+		if len(tmpQueue) == 0 {
+			break
+		}
+		queue = tmpQueue
+		res = append(res, tmpRes)
+	}
+	return res
+}
+
+func buildTree(preorder []int, inorder []int) *TreeNode {
+	if len(preorder) == 0 || preorder == nil{
+		return nil
+	}
+	root := &TreeNode{preorder[0],nil,nil}
+	i := 0
+	for ; i < len(inorder); i ++ {
+		if inorder[i] == preorder[0]{
+			break
+		}
+	}
+	root.Left = buildTree(preorder[1 : len(inorder[:i]) + 1], inorder[ : i])
+	root.Right = buildTree(preorder[len(inorder[:i]) + 1 : ], inorder [i + 1 : ])
+	return root
+}
+
+func flatten(root *TreeNode)  {
+	if root == nil {
+		return
+	}
+	flatten(root.Left)
+	flatten(root.Right)
+
+	tmp := root.Right
+
+	root.Right = root.Left
+	root.Left = nil
+	for root.Right != nil {
+		root = root.Right
+	}
+	root.Right = tmp
+}
