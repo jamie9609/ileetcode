@@ -182,3 +182,87 @@ func allPath(root *TreeNode, sum int) int {
 	cnt += allPath(root.Right, sum - root.Val)
 	return cnt
 }
+
+//股票买卖，贪心算法
+func maxProfit(prices []int) int {
+	maxVal := 0
+	if len(prices) == 0 {
+		return maxVal
+	}
+
+	minPrice := prices[0]
+	for i := 1; i < len(prices); i ++ {
+		if minPrice > prices[i] {
+			minPrice = prices[i]
+		} else {
+			v := prices[i] - minPrice
+			maxVal = max(maxVal, v)
+		}
+	}
+	return maxVal
+}
+
+func max(a,b int)int{
+	if a>b{
+		return a
+	}
+	return b
+}
+
+func uniquePaths(m int, n int) int {
+	if m <= 0 || n <= 0 {
+		return 0
+	}
+
+	dp := make([][]int, 0)
+
+	for i := 0; i < m; i ++ {
+		dp[i] = make([]int, n)
+		dp[i][0] = 1
+	}
+
+	for i := 0; i < n; i ++ {
+		dp[0][i] = 1
+	}
+
+	for i := 1; i < m ; i ++ {
+		for j := 1; j < n ; j ++ {
+			dp[i][j] = dp[i-1][j] + dp[i][j -1]
+		}
+	}
+	return dp[m-1][n-1]
+}
+
+func minPathSum(grid [][]int) int {
+	if grid == nil || len(grid) == 0 || len(grid[0]) == 0{
+		return 0
+	}
+	m := len(grid)
+	n := len(grid[0])
+	dp := make([][]int, m)
+
+	for i := 0; i < m ; i ++ {
+		dp[i] = make([]int, n)
+	}
+	dp[0][0] = grid[0][0]
+	for i := 1; i < m ; i ++ {
+		dp[i][0] = dp[i -1][0] + grid[i][0]
+	}
+	for j := 1; j < n; j ++ {
+		dp[0][j] = dp[0][j - 1] + grid[0][j]
+	}
+	for i := 1; i < m ; i ++ {
+		for j := 1; j < n ; j ++ {
+			dp[i][j] = min(dp[i][j-1],dp[i-1][j]) + grid[i][j]
+		}
+	}
+	return dp[m-1][n-1]
+}
+
+func min(x,y int) int {
+	if x<y {
+		return x
+	}
+	return y
+}
+
