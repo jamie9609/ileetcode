@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9104105e-69a9-4f62-98f9-a8c5c677e86e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/level4/dp.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/level4/dp.go" beforeDir="false" afterPath="$PROJECT_DIR$/level4/dp.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/level4/nums.go" beforeDir="false" afterPath="$PROJECT_DIR$/level4/nums.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/level4/tree2.go" beforeDir="false" afterPath="$PROJECT_DIR$/level4/tree2.go" afterDir="false" />
     </list>
@@ -17,7 +17,7 @@
     <session id="-1600768556">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="60" />
+          <entry key="project.closed" value="63" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="25" />
           <entry key="project.open.time.10" value="1" />
@@ -26,16 +26,16 @@
           <entry key="project.open.time.2" value="7" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.4" value="3" />
-          <entry key="project.open.time.5" value="9" />
-          <entry key="project.open.time.6" value="8" />
+          <entry key="project.open.time.5" value="11" />
+          <entry key="project.open.time.6" value="9" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="61" />
+          <entry key="project.opened" value="64" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="go" value="142" />
+          <entry key="go" value="148" />
           <entry key="h" value="2" />
           <entry key="md" value="1" />
           <entry key="notes" value="5" />
@@ -44,20 +44,20 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="C++" value="2" />
-          <entry key="Go" value="142" />
+          <entry key="Go" value="148" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="go" value="55411" />
+          <entry key="go" value="58614" />
           <entry key="notes" value="358" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Go" value="55411" />
+          <entry key="Go" value="58614" />
           <entry key="PLAIN_TEXT" value="358" />
         </counts>
       </usages-collector>
@@ -70,29 +70,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/level4/tree2.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="162" column="25" selection-start-line="162" selection-start-column="25" selection-end-line="162" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/level4/nums.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="239" column="4" selection-start-line="239" selection-start-column="4" selection-end-line="246" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/level4/dp.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="559">
-              <caret line="66" column="13" lean-forward="true" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
+            <state relative-caret-position="310">
+              <caret line="293" column="10" selection-start-line="293" selection-start-column="10" selection-end-line="293" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -135,9 +117,9 @@
         <option value="$PROJECT_DIR$/level3/tree.go" />
         <option value="$PROJECT_DIR$/notes" />
         <option value="$PROJECT_DIR$/level4/tree.go" />
+        <option value="$PROJECT_DIR$/level4/dp.go" />
         <option value="$PROJECT_DIR$/level4/tree2.go" />
         <option value="$PROJECT_DIR$/level4/nums.go" />
-        <option value="$PROJECT_DIR$/level4/dp.go" />
       </list>
     </option>
   </component>
@@ -171,6 +153,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -187,7 +170,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -274,7 +256,7 @@
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.29542202" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32331902" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -287,7 +269,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.08915663" />
+      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.23493975" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -511,22 +493,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/level4/tree2.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="162" column="25" selection-start-line="162" selection-start-column="25" selection-end-line="162" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/level4/nums.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="239" column="4" selection-start-line="239" selection-start-column="4" selection-end-line="246" selection-end-column="25" />
+        <state relative-caret-position="513">
+          <caret line="337" column="1" lean-forward="true" selection-start-line="337" selection-start-column="1" selection-end-line="337" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/level4/dp.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="559">
-          <caret line="66" column="13" lean-forward="true" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="13" />
+        <state relative-caret-position="483">
+          <caret line="123" column="4" selection-start-line="123" selection-start-column="4" selection-end-line="123" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/level4/nums.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="293" column="10" selection-start-line="293" selection-start-column="10" selection-end-line="293" selection-end-column="10" />
         </state>
       </provider>
     </entry>

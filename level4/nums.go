@@ -266,3 +266,45 @@ func min(x,y int) int {
 	return y
 }
 
+
+func searchInsert(nums []int, target int) int {
+	if nums == nil || len(nums) == 0{
+		return -1
+	}
+
+	left := 0
+	right := len(nums) -1
+
+	for left <= right {
+		mid := (left + right ) / 2 + 1
+		if nums[mid] == target {
+			return mid
+		}
+		if nums[mid] > target{
+			right = mid - 1
+		}
+		if nums[mid] < target{
+			left = mid + 1
+		}
+	}
+	return left
+}
+
+func mySqrt(x int) int {
+	if x <= 1 {
+		return 1
+	}
+	left := 0
+	right := x
+	for right - left > 1 {
+		mid := (left + right) / 2
+		if mid * mid == x {
+			return mid
+		}else if mid * mid > x {
+			right = mid
+		}else {
+			left = mid
+		}
+	}
+	return left
+}

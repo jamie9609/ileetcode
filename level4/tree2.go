@@ -1,5 +1,7 @@
 package level4
 
+import "math"
+
 //二叉树的最近公共祖先
 func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 	if root == nil || root == p || root == q {
@@ -194,3 +196,145 @@ func find(root *TreeNode, arr *[]int) {
 	*arr = append(*arr, root.Val)
 	find(root.Right, arr)
 }
+
+
+func sumNumbers(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	var sum int
+	dfsHelper1(root, 0, &sum)
+	return sum
+}
+
+func dfsHelper1(root *TreeNode, nums int, sum *int)  {
+	if root == nil {
+		return
+	}
+	nums = nums * 10 + root.Val
+	if root.Left == nil && root.Right == nil {
+		*sum = *sum + nums
+	}
+
+	dfsHelper1(root.Left, nums, sum)
+	dfsHelper1(root.Right, nums, sum)
+}
+
+func isBalanced(root *TreeNode) bool {
+	if root == nil {
+		return true
+	}
+	if math.Abs(depth(root.Right) - depth(root.Left) ) > 1{
+		return false
+	}
+	return isBalanced(root.Right) && isBalanced(root.Left)
+}
+
+
+func depth(root *TreeNode) float64 {
+	if root == nil {
+		return 0
+	}
+	return math.Max(depth(root.Left), depth(root.Right)) +1
+
+}
+
+// 删除二叉搜索树中的节点
+func deleteNode(root *TreeNode, key int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	if key < root.Val {
+		root.Left = deleteNode(root.Left, key)
+	}
+	if key > root.Val {
+		root.Right = deleteNode(root.Right, key)
+	}
+	if key == root.Val{
+		if root.Left == nil {
+			return root.Right
+		}
+		if root.Right == nil {
+			return root.Left
+		}
+		node := root.Right
+		for node.Left != nil {
+			node = node.Left
+		}
+		node.Left = root.Left
+		return root.Right
+	}
+	return root
+}
+
+func constructMaximumBinaryTree(nums []int) *TreeNode {
+	if len(nums) == 0 || nums == nil {
+		return nil
+	}
+	key, value := helper1(nums)
+	root := TreeNode{value,nil,nil}
+	root.Left = constructMaximumBinaryTree(nums[0: key])
+	root.Right = constructMaximumBinaryTree(nums[key + 1:])
+	return &root
+}
+
+func helper1(nums []int) (key int, value int ){
+	max := -1
+	maxIndex := -1
+	for i :=0 ; i < len(nums); i ++ {
+		if nums[i] > max{
+			max = nums[i]
+			maxIndex = i
+		}
+	}
+	return maxIndex, max
+}
+
+func buildTree(inorder []int, postorder []int) *TreeNode {
+	if len(inorder) == 0 || len(postorder) == 0 {
+		return nil
+	}
+
+	valNum := postorder[len(postorder) - 1]
+
+	root := TreeNode{valNum,nil,nil}
+	index := -1
+	for i := 0 ; i < len(inorder); i ++ {
+		if inorder[i] == valNum {
+			index = i
+		}
+	}
+	root.Right = buildTree(inorder[index + 1:], postorder[index:len(postorder) - 1])
+	root.Left = buildTree(inorder[0:index], postorder[0 :index])
+	return &root
+}
+
+func countNodes(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}else if root.Right == nil && root.Left == nil {
+		return 1
+	}
+
+	leftHeight := 0
+	tmpNode := root.Left
+	for tmpNode != nil {
+		leftHeight ++
+		tmpNode = tmpNode.Left
+	}
+	rightHeight := 0
+	tmpNode = root.Right
+	for tmpNode != nil {
+		rightHeight ++
+		tmpNode = tmpNode.Left
+	}
+
+	if rightHeight == leftHeight {
+		return 1 + countNodes(root.Right) + (1 << leftHeight -1)
+	} else {
+		return 1 + countNodes(root.Left) + (1 << rightHeight -1)
+	}
+}
+
+
