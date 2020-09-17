@@ -194,10 +194,10 @@ func preorderTraversal(root *TreeNode) []int {
 
 //n叉树的层序遍历
 
-type Node struct {
+/*type Node struct {
 	Val   			int
 	Children  		[]*Node
-}
+}*/
 
 func levelOrder(root *Node) [][]int {
 	var res [][]int
@@ -989,3 +989,84 @@ func flatten(root *TreeNode)  {
 	}
 	root.Right = tmp
 }
+
+var p, d int
+
+func isCousins(root *TreeNode, x int, y int) bool {
+	dfsHelp2(root, 0, 0, x)
+	p1, d1 := p, d
+	dfsHelp2(root, 0,0, y)
+	return p1 != p && d1 == d
+}
+
+func dfsHelp2(root *TreeNode, parVal, depth, x int) {
+	if root.Val == x {
+		p, d = parVal, depth
+	}
+	if root.Left != nil {
+		dfsHelp2(root.Left, root.Val, depth +1 , x)
+	}
+	if root.Right != nil {
+		dfsHelp2(root.Right, root.Val, depth + 1, x)
+	}
+}
+type Node struct {
+	Val 	int
+	Left 	*Node
+	Right	*Node
+	Next 	*Node
+}
+
+func connect(root *Node) *Node {
+	if root == nil{
+		return nil
+	}
+
+	node := root
+	var nextLevel *Node
+	for node.Left != nil {
+		nextLevel = node.Left
+		for node != nil {
+			node.Left.Next = node.Right
+			if node.Next != nil {
+				node.Right.Next = node.Next.Left
+			}
+			node = node.Next
+		}
+		node = nextLevel
+	}
+	return root
+}
+
+func findSecondMinimumValue(root *TreeNode) int {
+	return helper10(root, root.Val)
+}
+
+func helper10(root *TreeNode, s int) int  {
+	if root == nil {
+		return -1
+	}
+
+	if root.Val > s {
+		return root.Val
+	}
+
+	sLeft := helper10(root.Left, s)
+	sRight := helper10(root.Right, s)
+
+	if sLeft == -1 {
+		return sRight
+	}
+
+	if sRight == -1 {
+		return sLeft
+	}
+	return min1(sLeft, sRight)
+}
+func min1(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+

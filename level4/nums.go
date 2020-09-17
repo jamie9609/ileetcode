@@ -308,3 +308,38 @@ func mySqrt(x int) int {
 	}
 	return left
 }
+
+
+func twoSum(numbers []int, target int) []int {
+	left := 0
+	right := len(numbers) -1
+
+	for left <= right {
+		if numbers[left] + numbers[right] == target {
+			return []int{left+1, right+1}
+		}else if numbers[left] + numbers[right] > target {
+			right --
+		}else {
+			left ++
+		}
+	}
+	return nil
+}
+
+func missingNumber(nums []int) int {
+	if nums == nil {
+		return -1
+	}
+	left1 := 0
+	right1 := len(nums) - 1
+
+	for left1 <= right1 {
+		mid := (left1 + right1) /2
+		if nums[mid] == mid {
+			left1 = mid + 1
+		}else {
+			right1 = mid -1
+		}
+	}
+	return left1
+}
