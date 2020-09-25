@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ileetcode/level3"
+	"ileetcode/level5"
 
 	"fmt"
 )
@@ -42,15 +42,19 @@ func main(){
 
 
 	// Node5 := level3.ListNode{5,nil}
-	Node4 := level3. ListNode{4,nil}
+	/*Node4 := level3. ListNode{4,nil}
 	Node3 := level3.ListNode{3,&Node4}
 	Node2 := level3.ListNode{2,&Node3}
 	Node1 := level3.ListNode{1,&Node2}
 	head := Node1
+*/
+	/*var s string
+	s = "au"*/
 
+	nums := []int{3,1}
+	target := 1
 
-	res := level3.SplitListToParts(&head,3)
-
+	res := level5.Search(nums, target)
 
 	fmt.Printf("结果是：%+v" ,res)
 }
