@@ -1,5 +1,7 @@
 package level5
 
+import "sort"
+
 func myPow(x float64, n int) float64 {
 	if n <0 {
 		return mixPow(1.0/x, -n)
@@ -270,14 +272,6 @@ func maxSubArray(nums []int) int {
 	return maxSum
 }
 
-func maxNum(a, b int) int {
-	if  a > b {
-		return a
-	}else {
-		return b
-	}
-}
-
 
 func maxProduct(nums []int) int {
 	if len(nums) == 0 || nums == nil {
@@ -312,6 +306,64 @@ func maxNums(a, b, c int) int {
 	}
 }
 
+/*func minNums(a, b, c int) int {
+	res := a
+	if  b < a {
+		res = b
+	}
+	if res > c {
+		return c
+	} else {
+		return res
+	}
+}*/
+
+func integerBreak(n int) int {
+	dp := make([]int, n + 1)
+	dp[0], dp[1], dp[2] = 0, 1, 1
+	for i := 3; i <= n ; i ++ {
+		for j := 1; j < i; j ++ {
+			tmp := maxNum(j* (i - j),j * dp[i - j])
+			dp[i] = maxNum(tmp, dp[i])
+		}
+	}
+	return dp[n]
+}
+
+func maxNum(a, b int) int {
+	if  a > b {
+		return a
+	}else {
+		return b
+	}
+}
+
+
+func GetKthMagicNumber(k int) int {
+	if k == 0 {
+		return 1
+	}
+	index3, index5, index7 := 0, 0, 0
+	res := make([]int, k)
+	res[0] = 1
+
+	for i := 1; i < k ; i ++ {
+		res[i] = minNums(res[index3] * 3, res[index5] * 5, res[index7] * 7)
+		//可能会存在res[index3] * 3 == res[index5] * 5 的情况，不能用if else
+		if res[i] == res[index3] * 3 {
+			index3 ++
+		}
+		if res[i] == res[index5] * 5 {
+			index5 ++
+		}
+		if res[i] == res[index7] * 7 {
+			index7 ++
+		}
+
+	}
+	return res[k -1]
+}
+
 func minNums(a, b, c int) int {
 	res := a
 	if  b < a {
@@ -325,12 +377,57 @@ func minNums(a, b, c int) int {
 }
 
 
+func TopKFrequent(nums []int, k int) []int {
+	res := make([]int, 0)
+	allMap := make(map[int]int)
+
+	for i := 0; i < len(nums); i ++ {
+		if _, ok := allMap[nums[i]]; ok {
+			allMap[nums[i]] ++
+		}else {
+			allMap[nums[i]] = 1
+			res = append(res, nums[i])
+		}
+	}
+	sort.Slice(res, func(i, j int) bool {
+		return allMap[res[i]] > allMap[res[j]]
+	})
+
+	return res[:k]
+}
 
 
+func RemoveDuplicates(nums []int) int {
+	if len(nums) == 1 {
+		return 1
+	}
+	flag := 1
+	res := 0
+	for flag <= len(nums) -1 {
+		if nums[flag] == nums[flag - 1] {
+			res ++
+		}
+		flag ++
+	}
+	return len(nums) - res
+}
 
+func RemoveDuplicates1(nums []int) int {
+	nui := 0
+	for i := 1; i < len(nums); i++ {
+		if nums[nui] != nums[i] {
+			nui++
+			nums[nui] = nums[i]
+		}
+	}
+	return nui + 1
+}
 
+func longestCommonPrefix(strs []string) string {
+	num := len(strs) - 1
 
+	sort.Slice(strs, func(i, j int) bool {
+		return len(strs[i]) < len(strs[j])
+	})
 
-
-
-
+}

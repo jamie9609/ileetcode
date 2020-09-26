@@ -51,10 +51,18 @@ func main(){
 	/*var s string
 	s = "au"*/
 
-	nums := []int{3,1}
+	/*nums := []int{3,1}
 	target := 1
 
-	res := level5.Search(nums, target)
+	res := level5.Search(nums, target)*/
 
-	fmt.Printf("结果是：%+v" ,res)
+	/*res := level5.GetKthMagicNumber(20)*/
+
+	nums := []int{1,1,2,3,4,4,4,5,5}
+
+	res := level5.RemoveDuplicates(nums)
+
+	res2 := level5.RemoveDuplicates1(nums)
+
+	fmt.Printf("结果是：%+v, %+v" ,res, res2)
 }
