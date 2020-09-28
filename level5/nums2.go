@@ -424,10 +424,10 @@ func RemoveDuplicates1(nums []int) int {
 }
 
 func longestCommonPrefix(strs []string) string {
-	num := len(strs) - 1
+	//num := len(strs) - 1
 
 	sort.Slice(strs, func(i, j int) bool {
 		return len(strs[i]) < len(strs[j])
 	})
-
+	return ""
 }

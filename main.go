@@ -60,6 +60,8 @@ func main(){
 
 	nums := []int{1,1,2,3,4,4,4,5,5}
 
+	stringL :="我们"
+	fmt.Printf("结果是：%d" ,len(stringL))
 	res := level5.RemoveDuplicates(nums)
 
 	res2 := level5.RemoveDuplicates1(nums)

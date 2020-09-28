@@ -2,6 +2,9 @@ package level6
 
 import (
 	"math"
+	"sort"
+	"strconv"
+	"strings"
 )
 
 func findLength(A []int, B []int) int {
@@ -219,4 +222,314 @@ func kthSmallest(matrix [][]int, k int) int {
 		}
 	}
 	return  heap[0]
+}
+
+
+//https://leetcode-cn.com/problems/gu-piao-de-zui-da-li-run-lcof/
+// 假设把某股票的价格按照时间先后顺序存储在数组中，请问买卖该股票一次可能获得的最大利润是多少？
+// 输入: [7,1,5,3,6,4]
+// 输出: 5
+// 解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+//     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格。
+// 输入: [7,6,4,3,1]
+// 输出: 0
+// 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+
+func maxProfit(prices []int) int {
+	if len(prices) == 0 || prices == nil || len(prices) == 1{
+		return 0
+	}
+	dp := make([]int, len(prices) + 1)
+	min := prices[0]
+
+	for i := 1; i < len(prices) ; i ++ {
+		min = minNum(min , prices[i])
+		dp[i] = maxNum(dp[i - 1], prices[i] - min)
+	}
+	return dp[len(prices) -1]
+}
+
+func maxNum(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
+}
+func minNum(a, b int) int {
+	if a < b {
+		return a
+	} else {
+		return b
+	}
+}
+
+func romanToInt(s string) int {
+	dictMap := map[byte]int{
+		'I': 1,
+		'V': 5,
+		'X': 10,
+		'L': 50,
+		'C': 100,
+		'D': 500,
+		'M': 1000,
+	}
+
+	if len(s) == 1 {
+		return dictMap[s[0]]
+	}
+	res := dictMap[s[0]]
+	for i := 0; i < len(s) - 1; i ++ {
+		if dictMap[s[i + 1]] <= dictMap[s[i]] {
+			res = res + dictMap[s[i + 1]]
+		} else {
+			res = res - dictMap[s[i]] + dictMap[s[i + 1]] - dictMap[s[i]]
+		}
+	}
+	return res
+}
+
+
+
+func threeSum(nums []int) [][]int {
+	if len(nums) < 3 || nums == nil {
+		return nil
+	}
+	res := make([][]int,0)
+
+	sort.Slice(nums, func(i, j int) bool {
+		return nums[i] < nums[j]
+	})
+
+	for i := 0; i < len(nums) - 1; i ++ {
+		if i != 0 && nums[i] == nums[i - 1] {
+			continue
+		}
+		left := i + 1
+		right := len(nums) - 1
+		for left < right {
+			if nums[left] + nums[right] + nums[i] == 0 {
+				res = append(res,[]int{nums[i], nums[left], nums[right]})
+				//为了去重，需要把左指针和右指针都移动
+				for left < right && nums[left] == nums[left+1] {
+					left++
+				}
+				for left < right && nums[right] == nums[right-1] {
+					right--
+				}
+				left ++
+				right --
+			} else if nums[left] + nums[right] + nums[i] > 0 {
+				right --
+			} else {
+				left ++
+			}
+		}
+	}
+	return res
+}
+
+
+func plusOne(digits []int) []int {
+	for i := len(digits) -1; i >= 0 ;i -- {
+		if digits[i] != 9{
+			digits[i] ++
+			break
+		}
+		digits[i] = 0
+	}
+	if digits[0] == 0 {
+		digits = append([]int{1}, digits...)
+	}
+	return digits
+}
+
+
+func myAtoi(str string) int {
+	//去掉收尾空格
+	str = strings.TrimSpace(str)
+	result := 0
+	sign := 1
+
+	for i, v := range str {
+		if v >= '0' && v <= '9' {
+			result = result*10 + int(v -'0')
+		} else if v == '-' && i == 0 {
+			sign = -1
+		} else if v == '+' && i == 0 {
+			sign = 1
+		} else {
+			break
+		}
+		// 数值最大检测
+		if result > math.MaxInt32 {
+			if sign == -1 {
+				return math.MinInt32
+			}
+			return math.MaxInt32
+		}
+	}
+	return sign * result
+}
+
+
+
+type Twitter struct {
+	Tweets 		[]int
+	UserTweets 	map[int][]int
+	Follows 	map[int][]int
+	IsFollowMy 	map[int]bool
+}
+
+
+/** Initialize your data structure here. */
+func Constructor() Twitter {
+	var Tweets []int
+	var UserTweets = make(map[int][]int)
+	var Follows = make(map[int][]int)
+	var IsFollowMy = make(map[int]bool)
+
+	t := Twitter{
+		Tweets: Tweets,
+		UserTweets: UserTweets,
+		Follows: Follows,
+		IsFollowMy: IsFollowMy,
+	}
+	return t
+}
+
+
+/** Compose a new tweet. */
+func (this *Twitter) PostTweet(userId int, tweetId int)  {
+	this.Tweets = append(this.Tweets, tweetId)
+	this.UserTweets[userId] = append(this.UserTweets[userId], tweetId)
+}
+
+
+/** Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent. */
+func (this *Twitter) GetNewsFeed(userId int) []int {
+	fs := this.Follows[userId]
+	var allTweets []int
+
+	for _, val := range fs {
+		allTweets = append(allTweets, this.UserTweets[val]...)
+	}
+
+	if ! this.IsFollowMy[userId] {
+		allTweets = append(allTweets, this.UserTweets[userId]...)
+	}
+
+	var sortTweets []int
+
+	aTLen := len(this.Tweets)
+	s := 0
+	// 按照发的推特顺序进行倒序排序
+	for i:=aTLen-1; i>=0; i-- {
+		if s >= 10 {
+			break
+		}
+		for _,n := range allTweets {
+
+			if this.Tweets[i] == n && s < 10{
+				s++
+				sortTweets = append(sortTweets,n)
+			}
+		}
+	}
+	return sortTweets
+}
+
+
+/** Follower follows a followee. If the operation is invalid, it should be a no-op. */
+func (this *Twitter) Follow(followerId int, followeeId int)  {
+
+	if followerId == followeeId {
+		this.IsFollowMy[followerId] = true
+	}
+
+	// 下面是判断这人是否关注了，如果已经关注了，那么就不再关注了
+	var isFed bool
+
+	for _,v := range this.Follows[followerId] {
+		if v == followeeId {
+			isFed = true
+		}
+	}
+	if !isFed {
+		this.Follows[followerId] = append(this.Follows[followerId],followeeId)
+	}
+
+}
+
+
+/** Follower unfollows a followee. If the operation is invalid, it should be a no-op. */
+func (this *Twitter) Unfollow(followerId int, followeeId int)  {
+	if followeeId == followerId {
+		this.IsFollowMy[followerId] = false
+	}
+	var temp []int
+	for _,v := range this.Follows[followerId] {
+		if v != followeeId {
+			temp = append(temp,v)
+		}
+	}
+	this.Follows[followerId] = temp
+}
+
+
+// 最接近原点的 K 个点
+func kClosest(points [][]int, K int) [][]int {
+	if len(points) < K || points == nil {
+		return nil
+	}
+
+	res := make([]int, 0)
+	resAll := make([][]int, 0)
+	pointMap := make(map[int][]int)
+	for key, val := range points {
+		tmpKey := points[key][0] * points[key][0] + points[key][1] * points[key][1]
+		pointMap[tmpKey] = val
+		res = append(res, tmpKey)
+	}
+	for i := (K - 1) /2 ; i >= 0; i -- {
+		heapSort(res, i, K - 1)
+	}
+
+	for i := K ; i < len(res); i ++ {
+		if res[i] < res[0] {
+			res[0] = res[i]
+			heapSort(res, 0, K - 1)
+		}
+	}
+
+	for i := 0; i <= K -1 ; i ++ {
+		tmpPoint := pointMap[res[i]]
+		resAll = append(resAll, tmpPoint)
+	}
+	return resAll
+}
+
+//大顶堆
+func heapSort(res []int, left int, right int)  {
+
+	root := left
+	for true {
+		child := root * 2 + 1
+
+		if child > right{
+			break
+		}
+
+		if child + 1 < right && res[child + 1] > res[child] {
+			child ++
+		}
+
+		if res[root] < res[child]{
+			res[root], res[child] = res[child], res[root]
+			root = child
+		} else {
+			break
+		}
+	}
+	return
 }
