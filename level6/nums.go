@@ -1,6 +1,7 @@
 package level6
 
 import (
+	"git.xiaojukeji.com/dop/driver-manager/app/maniple/target/controllers"
 	"math"
 	"sort"
 	"strconv"
@@ -532,4 +533,152 @@ func heapSort(res []int, left int, right int)  {
 		}
 	}
 	return
+}
+
+
+
+
+func tribonacci(n int) int {
+	if n ==  0 {
+		return 0
+	}
+	if n == 1 || n == 2 {
+		return 1
+	}
+	res := make([]int, n + 1)
+	res[0] = 0
+	res[1] = 1
+	res[2] = 1
+	for i := 3; i <= n; i ++ {
+		res[i] = res[i - 1] + res[i - 2] + res[i - 3]
+	}
+	return res[n]
+}
+
+
+func pathSum(root *TreeNode, sum int) int {
+	var m = 0
+	solve(root, sum, &m)
+	return m
+}
+
+func solve(root *TreeNode, sum int, m *int)  {
+	if root == nil {
+		return
+	}
+	helpSum(root, sum, m)
+	solve(root.Left, sum, m)
+	solve(root.Right, sum, m)
+}
+
+func helpSum(root *TreeNode, target int, m *int)  {
+	if root == nil {
+		return
+	}
+	target -= root.Val
+	if target == 0 {
+		*m ++
+	}
+	helpSum(root.Left, target , m)
+	helpSum(root.Right, target , m)
+}
+
+
+func divingBoard(shorter int, longer int, k int) []int {
+	if k == 0 {
+		return nil
+	}
+	if shorter == longer {
+		return []int{shorter * k}
+	}
+	res := make([]int, 0)
+	for i := 0; i <= k ; i ++ {
+		res = append(res, longer * i + shorter * (k - i) )
+	}
+	return res
+}
+
+//汉诺塔，经典问题
+
+func hanota(A []int, B []int, C []int) []int {
+
+	if A == nil {
+		return nil
+	}
+	move(len(A), &A, &B, &C)
+	return C
+}
+
+func move(n int, A *[]int, B *[]int, C *[]int)  {
+	if n == 0 {
+		return
+	}
+	if n == 1 {
+		*C = append(*C, (*A)[len(*A) - 1])
+		*A = (*A)[ : len(*A) - 1]
+	}
+	if n > 1 {
+		move(n - 1, A, C, B)
+		move(1, A, B, C)
+		move(n - 1, B, A, C)
+	}
+}
+
+
+//最长同值路径
+func longestUnivaluePath(root *TreeNode) int {
+	num := 0
+	help(root, &num)
+	return num
+}
+func help(root *TreeNode, num *int) int {
+	if root == nil {
+		return 0
+	}
+	l := help(root.Left, num)
+	r := help(root.Right, num)
+	var al, ar int
+	if root.Left != nil && root.Left.Val == root.Val {
+		al = l + 1
+	}
+	if root.Right != nil && root.Right.Val == root.Val {
+		ar += r + 1
+	}
+	*num = int(math.Max(float64(*num), float64(ar+al)))
+	return int(math.Max(float64(al), float64(ar)))
+}
+
+
+func countNegatives(grid [][]int) int {
+	var res int
+	for i :=0; i < len(grid) ; i ++ {
+		c := len(grid[i])
+		if grid[i][c-1] >= 0 {
+			continue
+		}
+		if grid[i][0] < 0 {
+			res += c
+			continue
+		}
+		r := binary(grid[i])
+		res += c - r
+	}
+	return res
+}
+
+func binary(nums []int) int {
+
+	left, right := 0, len(nums) - 1
+
+	for left <= right {
+		mid := left + (right - left) / 2
+		if nums[mid] > 0{
+			left = mid + 1
+		}else if nums[mid] < 0 {
+			right = mid - 1
+		}else {
+			left = mid + 1
+		}
+	}
+	return left
 }
