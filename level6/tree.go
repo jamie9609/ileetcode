@@ -1,6 +1,9 @@
 package level6
 
-import "math"
+import (
+	"math"
+	"sort"
+)
 
 type TreeNode struct {
 	Val  		int
@@ -57,7 +60,7 @@ func getMinimumDifference(root *TreeNode) int {
 	return minValue
 }
 
-func getAbs(a int,b int) int {
+/*func getAbs(a int,b int) int {
 	if a-b>0{
 		return a-b
 	}else{
@@ -65,7 +68,7 @@ func getAbs(a int,b int) int {
 	}
 }
 
-
+*/
 func largestValues(root *TreeNode) []int {
 	if root == nil {
 		return nil
@@ -120,7 +123,7 @@ func helper8(root *TreeNode, lower int, upper int) bool {
 
 	return helper8(root.Left, lower, root.Val) && helper8(root.Right, root.Val, upper)
 }
-
+/*
 func inorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return nil
@@ -142,7 +145,7 @@ func inorderTraversal(root *TreeNode) []int {
 	}
 	return res
 }
-
+*/
 func isValidBST(root *TreeNode) bool {
 	if root == nil {
 		return true
@@ -170,7 +173,7 @@ func isValidBST(root *TreeNode) bool {
 }
 
 
-func minDiffInBST(root *TreeNode) int {
+/*func minDiffInBST(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
@@ -195,7 +198,7 @@ func minDiffInBST(root *TreeNode) int {
 		node = tmpNode.Right
 	}
 	return res
-}
+}*/
 
 func minVal(a int, b int) int {
 	if a < b {
@@ -235,3 +238,119 @@ func getAbs(a int,b int) int {
 		return b-a
 	}
 }
+
+
+func FindTarget(root *TreeNode, k int) bool {
+	if root == nil {
+		return false
+	}
+	stack := make([]*TreeNode, 0)
+	node := root
+	res := make(map[int]bool)
+	for node != nil || len(stack) > 0 {
+		for node != nil {
+			stack = append(stack, node)
+			node = node.Left
+		}
+		tmpNode := stack[len(stack) - 1]
+		stack = stack[ :len(stack) - 1]
+		if _, ok := res[k - tmpNode.Val]; ok {
+			return true
+		}
+		res[tmpNode.Val] = true
+		node = tmpNode.Right
+	}
+	return false
+}
+
+func isPerfectSquare(num int) bool {
+	if num < 2 {
+		return true
+	}
+	left := 0
+	right := num
+
+	for left <= right {
+		mid := left + (right - left) / 2
+		if mid * mid == num {
+			return true
+		}else if mid * mid > num {
+			right = mid - 1
+		}else {
+			left = mid + 1
+		}
+	}
+	return false
+}
+
+func arrangeCoins(n int) int {
+	if n == 1 || n == 0 {
+		return n
+	}
+
+	for i := 2; i < n ;i ++ {
+		if (1 + i )* i /2 < n && (2 + i )* (i + 1) /2 > n {
+			return i
+		}
+	}
+	return -1
+}
+
+
+func removeElement(nums []int, val int) int {
+	if nums == nil || len(nums) == 0 {
+		return 0
+	}
+	for i := len(nums) - 1; i >= 0; i -- {
+		if nums[i] == val {
+			nums = append(nums[:i], nums[i + 1: ]...)
+		}
+	}
+	return len(nums)
+}
+
+
+//不能直接在函数里切分，不然每次遍历，res的长度就会减一，但是i依然不变，导致一些元素没有遍历到
+func Test(res []int) ([]int, int) {
+	num := 0
+	for i := 0; i < len(res); i ++ {
+		if res[i] == 2{
+			res = append(res[:i], res[i + 1: ]...)
+
+		}
+		num ++
+	}
+	return res, num
+}
+
+
+func merge(intervals [][]int) [][]int {
+	if len(intervals) == 0 || intervals == nil {
+		return nil
+	}
+
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0]< intervals[j][0]
+	})
+
+	nums := 0
+	for nums < len(intervals) -1 {
+		if intervals[nums][1] >= intervals[nums + 1][0] {
+			intervals[nums][1] = maxNums(intervals[nums + 1][1], intervals[nums][1] )
+			intervals = append(intervals[:nums + 1], intervals[nums + 2:]...)
+		} else {
+			nums ++
+		}
+	}
+
+	return intervals
+}
+
+func maxNums(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
+}
+

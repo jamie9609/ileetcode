@@ -1,10 +1,8 @@
 package level6
 
 import (
-	"git.xiaojukeji.com/dop/driver-manager/app/maniple/target/controllers"
 	"math"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -104,7 +102,7 @@ type KthLargest struct {
 }
 
 
-func Constructor(k int, nums []int) KthLargest {
+/*func Constructor(k int, nums []int) KthLargest {
 	kth := KthLargest{}
 	kth.data = []int{0}
 	kth.size = k
@@ -113,7 +111,7 @@ func Constructor(k int, nums []int) KthLargest {
 	}
 	return kth
 }
-
+*/
 
 func (this *KthLargest) Add(val int) int {
 	if this.count < this.size -1 {
@@ -681,4 +679,151 @@ func binary(nums []int) int {
 		}
 	}
 	return left
+}
+
+//最小栈
+
+
+type MinStack struct {
+	stack []int
+	MinSk []int
+}
+
+
+/** initialize your data structure here. */
+func Constructor() MinStack {
+	return MinStack{}
+}
+
+
+func (this *MinStack) Push(x int)  {
+	if len(this.MinSk) == 0 || this.MinSk[len(this.MinSk) - 1] >= x {
+		this.MinSk = append(this.MinSk, x)
+	}
+	this.stack = append(this.stack, x)
+}
+
+
+func (this *MinStack) Pop()  {
+	if this.stack[len(this.stack) - 1] == this.MinSk[len(this.MinSk) - 1]{
+		this.MinSk = this.MinSk[: len(this.MinSk) - 1]
+	}
+	this.stack = this.stack[ : len(this.stack) - 1]
+}
+
+
+func (this *MinStack) Top() int {
+	return this.stack[len(this.stack) - 1]
+}
+
+
+func (this *MinStack) GetMin() int {
+	return this.MinSk[len(this.MinSk) - 1]
+}
+
+
+
+func dailyTemperatures(T []int) []int {
+	res := make([]int, len(T))
+	//用栈来保存数组下标
+	stack := make([]int, 0)
+	for i := 0; i < len(T); i ++ {
+		temperature := T[i]
+		for len(stack) > 0 && temperature > T[stack[len(stack) - 1]]{
+			res[stack[len(stack) - 1]] = i - (stack[len(stack) - 1])
+			stack = stack[: len(stack) - 1]
+		}
+		stack = append(stack, i)
+	}
+	return res
+}
+
+
+
+type MyQueue struct {
+	stackPush []int
+	stackPop  []int
+}
+
+
+/** Initialize your data structure here. */
+func Constructor() MyQueue {
+	return MyQueue{}
+}
+
+
+/** Push element x to the back of queue. */
+func (this *MyQueue) Push(x int)  {
+	this.stackPush = append(this.stackPush, x)
+}
+
+
+/** Removes the element from in front of queue and returns that element. */
+func (this *MyQueue) Pop() int {
+	this.Pop()
+	res := this.stackPop[len(this.stackPop) - 1]
+	this.stackPop = this.stackPop[ : len(this.stackPop) - 1]
+	return res
+}
+
+
+/** Get the front element. */
+func (this *MyQueue) Peek() int {
+	if len(this.stackPop) == 0 {
+		for len(this.stackPush) >0 {
+			this.stackPop = append(this.stackPop, this.stackPush[len(this.stackPush) - 1])
+			this.stackPush = this.stackPush[ : len(this.stackPush) - 1]
+		}
+	}
+	return this.stackPop[len(this.stackPop) - 1]
+}
+
+
+/** Returns whether the queue is empty. */
+func (this *MyQueue) Empty() bool {
+	if len(this.stackPop) == 0 && len(this.stackPush) == 0 {
+		return true
+	}
+	return  false
+}
+
+type MaxQueue struct {
+	q1 []int
+	max []int
+
+}
+
+
+func Constructor() MaxQueue {
+	return MaxQueue{}
+}
+
+
+func (this *MaxQueue) Max_value() int {
+	if len(this.max) == 0{
+		return -1
+	}
+	return this.max[0]
+}
+
+
+func (this *MaxQueue) Push_back(value int)  {
+	this.q1 = append(this.q1,value)
+	for len(this.max) != 0 && value > this.max[len(this.max)-1]{
+		this.max = this.max[:len(this.max)-1]
+	}
+	this.max = append(this.max,value)
+}
+
+
+func (this *MaxQueue) Pop_front() int {
+	var n int
+	if len(this.q1) != 0{
+		n = this.q1[0]
+		this.q1 = this.q1[1:]
+		if this.max[0] == n{
+			this.max = this.max[1:]
+		}
+	}
+	return n
 }
