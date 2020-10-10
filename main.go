@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ileetcode/level6"
+	"ileetcode/level7"
 
 	"fmt"
 )
@@ -60,31 +60,36 @@ func main(){
 
 
 /*
-	TreeNode5 := level6.TreeNode{
+	TreeNode5 := level7.TreeNode{
 		4,nil, nil}
-	TreeNode4 := level6.TreeNode{
+	TreeNode4 := level7.TreeNode{
 		2,nil, nil}
-	TreeNode3 := level6.TreeNode{
+	TreeNode3 := level7.TreeNode{
 		6,nil, nil}
-	TreeNode2 := level6.TreeNode{
+	TreeNode2 := level7.TreeNode{
 		3,&TreeNode4, &TreeNode5}
-	TreeNode1 := level6.TreeNode{
+	TreeNode1 := level7.TreeNode{
 		5, &TreeNode2, &TreeNode3}
 	root := &TreeNode1
 
-	res := level6.FindTarget(root, 8)*/
-
+	res := level7.ListOfDepth()
+*/
 
 	/*nums := []int{1,1,2,3,4,4,4,5,5}
+	[1,2,3,4,5]
 
 	stringL :="我们"
 	fmt.Printf("结果是：%d" ,len(stringL))
 	res := level5.RemoveDuplicates(nums)
 
 	res2 := level5.RemoveDuplicates1(nums)*/
-	res := []int{1,2,5,2,5,0}
+/*	res := []int{1,2,5,2,5,0}
 	num := 0
-	res, num = level6.Test(res)
+	res, num = level6.Test(res)*/
 
-	fmt.Printf("结果是：%+v, %+v" ,res, num)
+	test := []int{1,2,3,4,5}
+	res := level7.Subsets(test)
+
+
+	fmt.Printf("结果是：%+v" ,res)
 }
